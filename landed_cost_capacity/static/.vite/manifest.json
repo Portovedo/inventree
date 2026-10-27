@@ -1,0 +1,39 @@
+{
+  "_IconPlus-CH3sr2-F.js": {
+    "file": "assets/IconPlus-CH3sr2-F.js",
+    "name": "IconPlus"
+  },
+  "_shared-Cw8z6dKE.js": {
+    "file": "assets/shared-Cw8z6dKE.js",
+    "name": "shared"
+  },
+  "src/Dashboard.tsx": {
+    "file": "Dashboard-RDDhBDmS.js",
+    "name": "Dashboard",
+    "src": "src/Dashboard.tsx",
+    "isEntry": true,
+    "imports": [
+      "_IconPlus-CH3sr2-F.js",
+      "_shared-Cw8z6dKE.js"
+    ]
+  },
+  "src/Panel.tsx": {
+    "file": "Panel-kUJ_MyC2.js",
+    "name": "Panel",
+    "src": "src/Panel.tsx",
+    "isEntry": true,
+    "imports": [
+      "_IconPlus-CH3sr2-F.js",
+      "_shared-Cw8z6dKE.js"
+    ]
+  },
+  "src/Settings.tsx": {
+    "file": "Settings-DsmQzu6m.js",
+    "name": "Settings",
+    "src": "src/Settings.tsx",
+    "isEntry": true,
+    "imports": [
+      "_shared-Cw8z6dKE.js"
+    ]
+  }
+}
