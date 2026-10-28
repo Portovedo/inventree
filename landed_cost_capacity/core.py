@@ -5,13 +5,36 @@
 - Multi-level build capacity, bottlenecks and an "N units" production/purchasing plan.
 """
 
+import importlib
+import sys
+
 from django.utils import timezone
 
 from plugin import InvenTreePlugin
 from plugin.mixins import AppMixin, EventMixin, ScheduleMixin, SettingsMixin, UrlsMixin, UserInterfaceMixin
 
-from . import PLUGIN_VERSION
-from .config import SLUG
+
+def _reload_submodules():
+    """Hot upgrade support.
+
+    When the plugin is upgraded from the UI, InvenTree re-imports this module but keeps the
+    previously imported sibling modules in sys.modules, mixing old and new code. Reload them
+    (dependencies first) so a new version works without restarting the server. Models and
+    migrations are deliberately not reloaded.
+    """
+    package = __package__ or 'landed_cost_capacity'
+    names = ['', '.allocation', '.capacity', '.config', '.landed', '.costing', '.capacity_service',
+             '.dashboard_service', '.serializers', '.views']
+    for name in names:
+        module = sys.modules.get(package + name)
+        if module is not None:
+            importlib.reload(module)
+
+
+_reload_submodules()
+
+from . import PLUGIN_VERSION  # noqa: E402
+from .config import SLUG  # noqa: E402
 
 ORDER_EVENTS = ('purchaseorderitem.received', 'purchaseorder.completed')
 
