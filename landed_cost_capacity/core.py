@@ -155,6 +155,7 @@ class LandedCostCapacity(AppMixin, EventMixin, ScheduleMixin, SettingsMixin, Use
             path('part/<int:pk>/capacity/', views.PartCapacityView.as_view(), name='part-capacity'),
             path('part/<int:pk>/plan/', views.PartPlanView.as_view(), name='part-plan'),
             path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+            path('dashboard/<str:widget>/', views.DashboardWidgetView.as_view(), name='dashboard-widget'),
             path('suppliers/', views.SupplierUpliftView.as_view(), name='suppliers'),
             path('backfill/', views.BackfillView.as_view(), name='backfill'),
             path('rules/', views.FeeRuleListView.as_view(), name='rules'),
@@ -204,16 +205,29 @@ class LandedCostCapacity(AppMixin, EventMixin, ScheduleMixin, SettingsMixin, Use
 
         return panels
 
+    DASHBOARD_WIDGETS = [
+        ('overview', 'Operations Overview', 'Key figures: what you can build, stock value, builds, purchasing, fees', 'ti:layout-dashboard:outline', 8, 2),
+        ('capacity', 'Build Capacity & Cost', 'Buildable quantity, bottleneck and landed unit cost of every assembly', 'ti:building-factory-2:outline', 5, 4),
+        ('production', 'Production', 'Active build orders: progress, target dates, missing components', 'ti:tool:outline', 5, 4),
+        ('purchasing', 'Purchasing Needs', 'What to buy or build for active build orders and minimum stock', 'ti:shopping-cart:outline', 6, 4),
+        ('incoming', 'Incoming Orders', 'Open purchase orders and recent receipts', 'ti:truck-delivery:outline', 4, 4),
+        ('inventory', 'Inventory Value', 'Stock value at landed cost, by category and top parts', 'ti:coin-euro:outline', 4, 4),
+        ('fees', 'Supplier Fees', 'Shipping, duty and other fees per month and per supplier', 'ti:receipt-tax:outline', 5, 4),
+    ]
+
     def get_ui_dashboard_items(self, request, context: dict, **kwargs):
         from .views import has_role
 
         if not request.user or not has_role(request.user, 'part', 'view'):
             return []
-        return [{
-            'key': 'landed-cost-capacity-dashboard',
-            'title': 'Build Capacity & Cost',
-            'description': 'Buildable quantity, bottleneck and landed unit cost of every assembly',
-            'icon': 'ti:building-factory-2:outline',
-            'source': self.plugin_static_file('Dashboard.js:RenderDashboardItem'),
-            'options': {'width': 8, 'height': 5},
-        }]
+        return [
+            {
+                'key': f'landed-cost-capacity-{key}' if key != 'capacity' else 'landed-cost-capacity-dashboard',
+                'title': title,
+                'description': description,
+                'icon': icon,
+                'source': self.plugin_static_file(f'Dashboard.js:Render{key.title()}'),
+                'options': {'width': width, 'height': height},
+            }
+            for key, title, description, icon, width, height in self.DASHBOARD_WIDGETS
+        ]

@@ -76,8 +76,21 @@ Automation:
       break plus that supplier's typical fee uplift.
 
     The plan can be exported to CSV.
-- **Dashboard widget "Build Capacity & Cost"**: every assembly with its capacity,
-  bottleneck and landed unit cost.
+## Dashboard widgets
+
+Add them from the dashboard menu (*Add widget*):
+
+| Widget | Shows |
+|--------|-------|
+| **Operations Overview** | For each top-level product, how many can be built now; inventory value at landed cost; active and overdue build orders; parts to order with an estimated cost; open and overdue POs; fees paid in the last 12 months |
+| **Build Capacity & Cost** | Every assembly with its multi-level capacity, bottleneck and landed unit cost |
+| **Production** | Active build orders: progress, allocation, target date (overdue in red) and missing components |
+| **Purchasing Needs** | What to buy (or build) to cover active build orders and minimum stock: quantity short, quantity already on order, supplier and estimated landed cost; CSV export |
+| **Incoming Orders** | Open purchase orders with expected dates, and receipts from the last 30 days |
+| **Inventory Value** | Stock value at landed cost by category, highest-value parts, and built stock valued at BOM cost |
+| **Supplier Fees** | Fees per month by type (shipping, duty, other) and each supplier's typical fee uplift |
+
+Widget data is cached for 2 minutes; ↻ refreshes it.
 
 Capacity respects BOM attrition, setup quantity and rounding multiples, plus variants and
 substitutes where the BOM line allows them. Settings control whether to:

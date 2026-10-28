@@ -52,7 +52,7 @@ export function money(value: string | number | null | undefined, currency = 'EUR
   return new Intl.NumberFormat(undefined, {
     style: 'currency',
     currency,
-    minimumFractionDigits: 2,
+    minimumFractionDigits: Math.min(2, maxDigits),
     maximumFractionDigits: maxDigits,
   }).format(n);
 }

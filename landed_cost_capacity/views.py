@@ -7,7 +7,7 @@ from rest_framework import permissions, serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from . import capacity_service, costing, landed
+from . import capacity_service, costing, dashboard_service, landed
 from .allocation import CATEGORIES, METHODS
 from .serializers import ExtraLineConfigSerializer, FeeRuleSerializer, OrderConfigSerializer
 
@@ -139,7 +139,30 @@ class DashboardView(BaseView):
     role = 'part'
 
     def get(self, request):
-        return Response(capacity_service.dashboard())
+        refresh = request.query_params.get('refresh') == '1'
+        return Response(dashboard_service.cached('capacity', capacity_service.dashboard, refresh))
+
+
+class DashboardWidgetView(BaseView):
+    """Data for one dashboard widget: overview, production, purchasing, incoming, inventory, fees."""
+
+    role = 'part'
+    WIDGETS = {
+        'production': dashboard_service.production,
+        'purchasing': dashboard_service.purchasing_needs,
+        'incoming': dashboard_service.incoming,
+        'inventory': dashboard_service.inventory_value,
+        'fees': dashboard_service.supplier_fees,
+    }
+
+    def get(self, request, widget):
+        refresh = request.query_params.get('refresh') == '1'
+        if widget == 'overview':
+            return Response(dashboard_service.overview(refresh=refresh))
+        fn = self.WIDGETS.get(widget)
+        if fn is None:
+            return Response({'detail': 'Unknown widget'}, status=404)
+        return Response(dashboard_service.cached(widget, fn, refresh))
 
 
 class SupplierUpliftView(BaseView):

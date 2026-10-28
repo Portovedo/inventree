@@ -3,37 +3,37 @@
     "file": "assets/IconPlus-CH3sr2-F.js",
     "name": "IconPlus"
   },
-  "_shared-Cw8z6dKE.js": {
-    "file": "assets/shared-Cw8z6dKE.js",
+  "_shared-DUcP81d5.js": {
+    "file": "assets/shared-DUcP81d5.js",
     "name": "shared"
   },
   "src/Dashboard.tsx": {
-    "file": "Dashboard-RDDhBDmS.js",
+    "file": "Dashboard-DREB4ghu.js",
     "name": "Dashboard",
     "src": "src/Dashboard.tsx",
     "isEntry": true,
     "imports": [
       "_IconPlus-CH3sr2-F.js",
-      "_shared-Cw8z6dKE.js"
+      "_shared-DUcP81d5.js"
     ]
   },
   "src/Panel.tsx": {
-    "file": "Panel-kUJ_MyC2.js",
+    "file": "Panel-DXdB5CNZ.js",
     "name": "Panel",
     "src": "src/Panel.tsx",
     "isEntry": true,
     "imports": [
       "_IconPlus-CH3sr2-F.js",
-      "_shared-Cw8z6dKE.js"
+      "_shared-DUcP81d5.js"
     ]
   },
   "src/Settings.tsx": {
-    "file": "Settings-DsmQzu6m.js",
+    "file": "Settings-BQ1_bn1P.js",
     "name": "Settings",
     "src": "src/Settings.tsx",
     "isEntry": true,
     "imports": [
-      "_shared-Cw8z6dKE.js"
+      "_shared-DUcP81d5.js"
     ]
   }
 }
