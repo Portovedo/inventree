@@ -25,7 +25,7 @@ class LandedCostCapacity(AppMixin, EventMixin, ScheduleMixin, SettingsMixin, Use
     DESCRIPTION = 'Landed cost allocation of purchase order fees, multi-level build capacity and production planning'
     VERSION = PLUGIN_VERSION
     AUTHOR = 'WADA Solutions'
-    WEBSITE = 'https://github.com/'
+    WEBSITE = 'https://github.com/Portovedo/inventree'
     LICENSE = 'MIT'
     MIN_VERSION = '1.5.0'
 

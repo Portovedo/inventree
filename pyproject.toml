@@ -27,7 +27,7 @@ classifiers = [
     "Framework :: InvenTree",
 ]
 [project.urls]
-Homepage = "https://github.com/"
+Homepage = "https://github.com/Portovedo/inventree"
 
 [project.entry-points."inventree_plugins"]
 LandedCostCapacity = "landed_cost_capacity.core:LandedCostCapacity"

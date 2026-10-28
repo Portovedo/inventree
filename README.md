@@ -93,7 +93,7 @@ From the InvenTree admin center → Plugins → *Install plugin*, or through the
 
 ```
 POST /api/plugins/install/
-{"url": "https://github.com/<owner>/inventree-landed-cost-capacity/archive/refs/heads/main.zip",
+{"url": "https://github.com/Portovedo/inventree/archive/refs/heads/main.zip",
  "packagename": "inventree-landed-cost-capacity", "confirm": true}
 ```
 
