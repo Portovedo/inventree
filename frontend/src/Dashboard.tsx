@@ -147,7 +147,7 @@ function OverviewWidget({ context }: { context: InvenTreePluginContext }) {
             label='Parts to order'
             value={data.parts_to_buy}
             color={data.parts_to_buy ? 'orange' : 'green'}
-            sub={`${num(data.purchase_estimate) ? `≈ ${money(data.purchase_estimate, cur, 0)} landed` : 'nothing to buy'}${data.parts_to_build ? ` · ${data.parts_to_build} to build` : ''}`}
+            sub={`${!data.parts_to_buy ? 'nothing to buy' : num(data.purchase_estimate) ? `≈ ${money(data.purchase_estimate, cur, 0)} landed` : 'no price on file'}${data.parts_to_build ? ` · ${data.parts_to_build} to build` : ''}`}
           />
           <Tile
             label='Open purchase orders'
