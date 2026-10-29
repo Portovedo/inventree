@@ -391,7 +391,7 @@ def nightly_check() -> dict:
     if settings.auto_apply_since:
         qs = PurchaseOrder.objects.filter(
             status=PurchaseOrderStatus.COMPLETE.value, complete_date__gt=settings.auto_apply_since
-        ).exclude(landed_cost_config__applied=True)
+        ).exclude(pk__in=OrderConfig.objects.filter(applied=True).values('order_id'))
         for order in qs:
             apply(order, None, settings)
             summary['new'].append(order.reference)

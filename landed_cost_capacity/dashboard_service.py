@@ -12,7 +12,9 @@ from django.core.cache import cache
 from django.db.models import Sum
 
 from .config import Settings, load_settings
-from .costing import OrderCache, _computed_landed, estimated_purchase_unit, primary_supplier_part, rolled_cost, supplier_uplifts
+from .costing import (
+    OrderCache, _computed_landed, estimated_purchase_unit, landed_item_ids, primary_supplier_part, rolled_cost, supplier_uplifts,
+)
 from .landed import compute, convert, d2, default_currency, money_parts
 
 ZERO = Decimal(0)
@@ -242,12 +244,13 @@ def inventory_value(settings: Settings | None = None) -> dict:
     unpriced = 0
 
     items = StockItem.objects.filter(StockItem.IN_STOCK_FILTER).select_related(
-        'part', 'part__category', 'location', 'purchase_order', 'landed_cost_backup'
+        'part', 'part__category', 'location', 'purchase_order'
     )
+    applied = landed_item_ids(items)
     for item in items:
         q = Decimal(item.quantity)
         unit = None
-        if item.purchase_order_id and item.supplier_part_id and not hasattr(item, 'landed_cost_backup'):
+        if item.purchase_order_id and item.supplier_part_id and item.pk not in applied:
             # Received on a PO whose landed cost is not applied yet: use the computed landed price
             unit = _computed_landed(item, cache_, cur)
         if unit is None:

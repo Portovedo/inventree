@@ -80,6 +80,18 @@ def _computed_landed(item, cache: OrderCache, cur: str) -> Decimal | None:
     return convert(sum((q * p for q, p in rows), ZERO) / qty, data['currency'], cur)
 
 
+def landed_item_ids(items) -> set:
+    """Ids of the given stock items whose landed cost has been applied.
+
+    Queried from the backup table instead of the reverse relation on StockItem: that
+    relation only exists while the plugin app is registered in the current process, which
+    is not guaranteed after a runtime plugin reload.
+    """
+    from .models import StockPriceBackup
+
+    return set(StockPriceBackup.objects.filter(stock_item__in=items.values('pk')).values_list('stock_item_id', flat=True))
+
+
 def stock_average(part, cache: OrderCache | None = None) -> dict:
     """Quantity weighted average landed price of stock on hand (default currency).
 
@@ -95,10 +107,11 @@ def stock_average(part, cache: OrderCache | None = None) -> dict:
     unpriced = ZERO
     landed_q = ZERO
     items = StockItem.objects.filter(part=part).filter(StockItem.IN_STOCK_FILTER)
-    for item in items.select_related('landed_cost_backup', 'purchase_order'):
+    applied = landed_item_ids(items)
+    for item in items.select_related('purchase_order'):
         q = Decimal(item.quantity)
         value = None
-        is_landed = hasattr(item, 'landed_cost_backup')
+        is_landed = item.pk in applied
         if item.purchase_order_id and item.supplier_part_id and not is_landed:
             value = _computed_landed(item, cache, cur)
             is_landed = value is not None
